@@ -84,7 +84,7 @@ function startTypeHtml(typo, text, index, mainKey) {
 
         if (hasKayClose(text,i,mainKey)) {
 
-            return count + keyworks[mainKey].length;
+            return count + keyworks[mainKey].length +1;
         }
         let key = kays(text,i);
         if (key.length > 0) {
@@ -92,7 +92,7 @@ function startTypeHtml(typo, text, index, mainKey) {
             typo.type(key);
             typo.type(keyworks[key]);
             typo.move(keyworks[key].length * -1, { delay: 500 });
-            let c = startType(typo, text, i + key.length , key);
+            let c = startTypeHtml(typo, text, i + key.length , key);
             typo.move(keyworks[key].length);
             count += c;
             i += c;
