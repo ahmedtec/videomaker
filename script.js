@@ -48,6 +48,7 @@ function html() {
 }
 
 keyworks = { '{': '}', '(': ')', '"': '"', '<div>': '</div>', '<a>': '</a>' }
+let all_kays = Object.keys(keyworks)
 
 let text_ = "<a>s</a>"
 // text_.substring(text_.indexOf("<a>") - 3, text_.lastIndexOf("</a>"))
@@ -77,7 +78,7 @@ function startTypeHtml(typo, text, index, key) {
         //         }
         //     }
         // }
-        
+
         // if (text[i] == ">") {
         //     end = count
 
@@ -96,9 +97,23 @@ function startTypeHtml(typo, text, index, key) {
         //         typo.type(text[i]);
         //     }
         // }
-        if (text[i] == "<"){
-            console.log(text[i] + text[i+1] +text[i+2]);
+        function kays(index = 0) {
+            let the_text = text.substring(index)
+            all_kays.forEach(function (value, ind) {
+                if (the_text.startsWith(value)) {
+                    console.log("ffffffound", value ,i);
+                    return value
+                }
+            });
         }
+
+        if (Object.keys(keyworks).indexOf(kays(i)) >= 0) {
+            console.log("ind" , ind );
+        }
+
+        // if (text[i] == "<") {
+        //     console.log(text[i] + text[i + 1] + text[i + 2]);
+        // }
         if (keyworks[key] == text[i]) {
             return count;
         }
