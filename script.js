@@ -58,24 +58,25 @@ function startTypeHtml(typo, text, index, key) {
     let count = 0;
     for (let i = index; i < text.length; i++) {
         count++;
-        if (text[i] == "<") {
-            start = count
-            let count_Html = count
-            for (let i = count_Html; i < text.length; i++) {
-                count_Html++
-                if (text[i] == ">") {
-                    end = count_Html
-                    data_now = text.slice(start - 1, end)
-                    
-                    console.log("data_now",data_now);
-                    data_now = ""
-                    start = 0;
-                    end = 0;
-                    // count =+ data_now.length +1 ;
-                    // console.log("start", start, "end", end, "data_now", data_now);
-                }
-            }
-        }
+
+        // if (text[i] == "<") {
+        //     start = count
+        //     let count_Html = count
+        //     for (let i = count_Html; i < text.length; i++) {
+        //         count_Html++
+        //         if (text[i] == ">") {
+        //             end = count_Html
+        //             data_now = text.slice(start - 1, end)
+
+        //             console.log("data_now",data_now);
+        //             data_now = ""
+        //             start = 0;
+        //             end = 0;
+        //             // count =+ data_now.length +1 ;
+        //             // console.log("start", start, "end", end, "data_now", data_now);
+        //         }
+        //     }
+        // }
         
         // if (text[i] == ">") {
         //     end = count
@@ -95,6 +96,9 @@ function startTypeHtml(typo, text, index, key) {
         //         typo.type(text[i]);
         //     }
         // }
+        if (text[i] == "<"){
+            console.log(text[i] + text[i+1] +text[i+2]);
+        }
         if (keyworks[key] == text[i]) {
             return count;
         }
