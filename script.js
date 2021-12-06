@@ -25,8 +25,8 @@ function html() {
             .replace(/"/g, `&quot;`)
         // console.log(html)
         let typo = new TypeIt("#typerHtml", {
-            cursor: false,
-            speed: 50,
+            cursor: true,
+            speed: 150,
             waitUntilVisible: true,
             afterStep: function (instance) {
                 // Prism.highlightElement(typerHtml)
@@ -39,26 +39,91 @@ function html() {
             },
         })
 
-        typo.type(codehtml.substr(0, 10))
-
-        typo.move(-5, { delay: 500 })
-
-        typo.type(codehtml.substr(10, 20))
-
+        // typo.type(codehtml.substr(0, 10))
+        // typo.move(-5, { delay: 500 })
+        // typo.type(codehtml.substr(10, 20))
+        startTypeHtml(typo, html, 0, '-');
         typo.go()
     });
 }
+
+keyworks = { '{': '}', '(': ')', '"': '"', '<div>': '</div>', '<a>': '</a>' }
+
+let text_ = "<a>s</a>"
+// text_.substring(text_.indexOf("<a>") - 3, text_.lastIndexOf("</a>"))
+
+console.log(text_.substring(text_.indexOf("<a>") + 3, text_.lastIndexOf("</a>")));
+
+function startTypeHtml(typo, text, index, key) {
+    let count = 0;
+    for (let i = index; i < text.length; i++) {
+        count++;
+        if (text[i] == "<") {
+            start = count
+            let count_Html = count
+            for (let i = count_Html; i < text.length; i++) {
+                count_Html++
+                if (text[i] == ">") {
+                    end = count_Html
+                    data_now = text.slice(start - 1, end)
+                    
+                    console.log("data_now",data_now);
+                    data_now = ""
+                    start = 0;
+                    end = 0;
+                    // count =+ data_now.length +1 ;
+                    // console.log("start", start, "end", end, "data_now", data_now);
+                }
+            }
+        }
+        
+        // if (text[i] == ">") {
+        //     end = count
+
+        //     // typo.type(text[i]);
+        //     console.log("start", start, "end", end, "Data is :", text.slice(start - 1, end));
+        //     data_ = text.slice(start - 1, end)
+        //     if (Object.keys(keyworks).indexOf(data_) >= 0) {
+        //         typo.type(text[i]);
+        //         typo.type(keyworks[data_]);
+        //         // typo.move(keyworks[data_].length * -1, { delay: 500 });
+        //         let c = startType(typo, text, i + keyworks[data_].length, text[i]);
+        //         typo.move(keyworks[data_].length);
+        //         count += c;
+        //         i += c;
+        //     } else {
+        //         typo.type(text[i]);
+        //     }
+        // }
+        if (keyworks[key] == text[i]) {
+            return count;
+        }
+        if (Object.keys(keyworks).indexOf(text[i]) >= 0) {
+            typo.type(text[i]);
+            typo.type(keyworks[text[i]]);
+            typo.move(keyworks[text[i]].length * -1, { delay: 500 });
+            let c = startType(typo, text, i + keyworks[text[i]].length, text[i]);
+            typo.move(keyworks[text[i]].length);
+            count += c;
+            i += c;
+        } else {
+            typo.type(text[i]);
+        }
+    }
+    return count;
+}
+
 
 // CSS
 function css() {
     getdata("style.css").then(css => {
         let iframHaveThisCode = iframe.contentDocument.body.innerHTML
-        new TypeIt("#typerCss", {
-            cursor: false,
-            speed: 50,
+        let typo = new TypeIt("#typerCss", {
+            cursor: true,
+            speed: 100,
             waitUntilVisible: true,
             afterStep: function (instance) {
-                Prism.highlightElement(typerCss)
+                // Prism.highlightElement(typerCss)
                 let typer = typerCss.innerText
                 document.getElementById("iframe").contentDocument.body.innerHTML = iframHaveThisCode + "<style>" + typer + "</style>"
                 // typerCss.scrollTop = 9999999
@@ -66,22 +131,50 @@ function css() {
             afterComplete: function (instance) {
                 // preparCss()
             },
-        }).type(css)
-            .go()
+        })
+        // typo.type(css)
+        startTypeCss(typo, css, 0, '-');
+        typo.go()
     });
 }
 
+function startTypeCss(typo, text, index, key) {
+    let count = 0;
+    for (let i = index; i < text.length; i++) {
+        count++;
+        if (keyworks[key] == text[i]) {
+            return count;
+        }
+        if (Object.keys(keyworks).indexOf(text[i]) >= 0) {
+            typo.type(text[i]);
+            typo.type(keyworks[text[i]]);
+            typo.move(keyworks[text[i]].length * -1, { delay: 1000 });
+            typo.type(`
+`);
+            typo.move(-1);
+            let c = startType(typo, text, i + keyworks[text[i]].length, text[i]);
+            typo.move(keyworks[text[i]].length);
+            count += c;
+            i += c;
+        } else {
+            typo.type(text[i]);
+        }
+    }
+    return count;
+}
+
+
 //  funtcion {"Name(val)contnue"} hello 
 
-keyworks = { '{': '}', '(': ')', '"': '"', '<h1>': '</h1>' }
+// keyworks = { '{': '}', '(': ')', '"': '"', '<div>': '</div>' ,'<a>': '</a>' }
 
 // Javascript
 function javascript() {
     getdata("script.js").then(jss => {
         let iframHaveThisCode = iframe.contentDocument.body.innerHTML
         let typo = new TypeIt("#typerjs", {
-            cursor: false,
-            speed: 100,
+            cursor: true,
+            speed: Math.floor(Math.random() * 99),
             waitUntilVisible: true,
             afterStep: function (instance) {
                 // Prism.highlightElement(typerjs)
@@ -111,7 +204,7 @@ function startType(typo, text, index, key) {
         if (Object.keys(keyworks).indexOf(text[i]) >= 0) {
             typo.type(text[i]);
             typo.type(keyworks[text[i]]);
-            typo.move(keyworks[text[i]].length * -1);
+            typo.move(keyworks[text[i]].length * -1, { delay: Math.floor(Math.random() * 999) });
             let c = startType(typo, text, i + keyworks[text[i]].length, text[i]);
             typo.move(keyworks[text[i]].length);
             count += c;
