@@ -47,7 +47,7 @@ function html() {
     });
 }
 
-keyworks = { '{': '}', '(': ')', '"': '"', '<div>': '</div>', '<a>': '</a>' }
+keyworks = { '{': '}', '(': ')', '"': '"', '<div>': '</div>', '-a-': '-/a-' }
 let all_kays = Object.keys(keyworks)
 
 let text_ = "<a>s</a>"
@@ -55,74 +55,45 @@ let text_ = "<a>s</a>"
 
 console.log(text_.substring(text_.indexOf("<a>") + 3, text_.lastIndexOf("</a>")));
 
-function startTypeHtml(typo, text, index, key) {
+function kays(text,index) {
+    let the_text = text.substring(index)
+    for(let key of all_kays){
+        if (the_text.startsWith(key)) {
+            console.log("ffffffound", key);
+            return key
+        }
+    }
+    return ''
+}
+
+function hasKayClose(text,index, key) {
+    let the_text = text.substring(index)
+    
+        if (the_text.startsWith(keyworks[key])) {
+            return true;
+        }
+    
+    return false;
+}
+
+function startTypeHtml(typo, text, index, mainKey) {
+    
     let count = 0;
     for (let i = index; i < text.length; i++) {
         count++;
 
-        // if (text[i] == "<") {
-        //     start = count
-        //     let count_Html = count
-        //     for (let i = count_Html; i < text.length; i++) {
-        //         count_Html++
-        //         if (text[i] == ">") {
-        //             end = count_Html
-        //             data_now = text.slice(start - 1, end)
+        if (hasKayClose(text,i,mainKey)) {
 
-        //             console.log("data_now",data_now);
-        //             data_now = ""
-        //             start = 0;
-        //             end = 0;
-        //             // count =+ data_now.length +1 ;
-        //             // console.log("start", start, "end", end, "data_now", data_now);
-        //         }
-        //     }
-        // }
-
-        // if (text[i] == ">") {
-        //     end = count
-
-        //     // typo.type(text[i]);
-        //     console.log("start", start, "end", end, "Data is :", text.slice(start - 1, end));
-        //     data_ = text.slice(start - 1, end)
-        //     if (Object.keys(keyworks).indexOf(data_) >= 0) {
-        //         typo.type(text[i]);
-        //         typo.type(keyworks[data_]);
-        //         // typo.move(keyworks[data_].length * -1, { delay: 500 });
-        //         let c = startType(typo, text, i + keyworks[data_].length, text[i]);
-        //         typo.move(keyworks[data_].length);
-        //         count += c;
-        //         i += c;
-        //     } else {
-        //         typo.type(text[i]);
-        //     }
-        // }
-        function kays(index = 0) {
-            let the_text = text.substring(index)
-            all_kays.forEach(function (value, ind) {
-                if (the_text.startsWith(value)) {
-                    console.log("ffffffound", value ,i);
-                    return value
-                }
-            });
+            return count + keyworks[mainKey].length;
         }
-
-        if (Object.keys(keyworks).indexOf(kays(i)) >= 0) {
-            console.log("ind" , ind );
-        }
-
-        // if (text[i] == "<") {
-        //     console.log(text[i] + text[i + 1] + text[i + 2]);
-        // }
-        if (keyworks[key] == text[i]) {
-            return count;
-        }
-        if (Object.keys(keyworks).indexOf(text[i]) >= 0) {
-            typo.type(text[i]);
-            typo.type(keyworks[text[i]]);
-            typo.move(keyworks[text[i]].length * -1, { delay: 500 });
-            let c = startType(typo, text, i + keyworks[text[i]].length, text[i]);
-            typo.move(keyworks[text[i]].length);
+        let key = kays(text,i);
+        if (key.length > 0) {
+            console.log('found key',key,keyworks[key]);
+            typo.type(key);
+            typo.type(keyworks[key]);
+            typo.move(keyworks[key].length * -1, { delay: 500 });
+            let c = startType(typo, text, i + key.length , key);
+            typo.move(keyworks[key].length);
             count += c;
             i += c;
         } else {
@@ -161,6 +132,7 @@ function startTypeCss(typo, text, index, key) {
     let count = 0;
     for (let i = index; i < text.length; i++) {
         count++;
+        if(text[i] == '\r')continue;
         if (keyworks[key] == text[i]) {
             return count;
         }
@@ -171,11 +143,12 @@ function startTypeCss(typo, text, index, key) {
             typo.type(`
 `);
             typo.move(-1);
-            let c = startType(typo, text, i + keyworks[text[i]].length, text[i]);
+            let c = startTypeCss(typo, text, i + keyworks[text[i]].length, text[i]);
             typo.move(keyworks[text[i]].length);
             count += c;
             i += c;
         } else {
+            console.log(text[i])
             typo.type(text[i]);
         }
     }
