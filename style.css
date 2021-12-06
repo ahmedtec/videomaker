@@ -1,0 +1,20 @@
+body {
+    background: #e5eff8;
+}
+
+.code_type,
+#iframe {
+    width: 100%;
+    min-height: 680px;
+    background: #fff;
+    border-radius: 15px;
+    margin-top: 15px;
+    padding: 15px;
+    font-size: 20px;
+    font-family: Consolas, 'Courier New', monospace;
+    box-shadow: 9px 17px 18px rgba(0, 0, 0, 0.05);
+}
+
+#typerHtml {
+    height: 500px;
+}

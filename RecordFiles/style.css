@@ -1,0 +1,10 @@
+:root {
+    --c1: #fff;
+    --th: 2px;
+    --dr: 0.1s;
+    --tr: cubic-bezier(0.4, 0, 1, 1);
+}
+
+body {
+    background: #fff;
+}
