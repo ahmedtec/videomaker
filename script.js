@@ -190,6 +190,7 @@ function startType(typo, text, index, key) {
     let count = 0;
     for (let i = index; i < text.length; i++) {
         count++;
+        if(text[i] == '\r')continue;
         if (keyworks[key] == text[i]) {
             return count;
         }
